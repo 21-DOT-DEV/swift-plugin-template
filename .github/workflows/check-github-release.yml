@@ -32,4 +32,4 @@ jobs:
       run: |
           echo $TEMPLATE_RELEASE
           echo $BINARY_RELEASE
-      if: ${{ RUN_PUBLISH }}
+      if: ${{ env.RUN_PUBLISH }}
