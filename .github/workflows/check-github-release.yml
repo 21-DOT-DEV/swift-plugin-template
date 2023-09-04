@@ -16,12 +16,6 @@ jobs:
       run: |
           echo "TEMPLATE_RELEASE=$(gh release list -R gigabitcoin/template-plugin -L 1)" >> $GITHUB_ENV
           echo "BINARY_RELEASE=$(gh release list -R evilmartians/lefthook -L 1)" >> $GITHUB_ENV
-          if [[ "$TEMPLATE_RELEASE" == "$BINARY_RELEASE" ]]
-          then
-              echo "RUN_PUBLISH=false" >> $GITHUB_ENV
-          else
-              echo "RUN_PUBLISH=false" >> $GITHUB_ENV
-          fi
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Print Variables
@@ -32,4 +26,4 @@ jobs:
       run: |
           echo $TEMPLATE_RELEASE
           echo $BINARY_RELEASE
-      if: ${{ env.RUN_PUBLISH }}
+      if: ${{ env.TEMPLATE_RELEASE == env.BINARY_RELEASE }}
