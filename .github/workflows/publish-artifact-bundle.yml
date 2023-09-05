@@ -12,6 +12,13 @@ on:
 
   # Enables manually running this workflow from the Actions tab
   workflow_dispatch:
+    inputs:
+      plugin_version:
+        required: true
+        type: string
+      plugin_repo:
+        required: true
+        type: string
 
 jobs:
   publish:
@@ -22,5 +29,8 @@ jobs:
     - name: Get latest version
       run: |
           ls -a
+          gh release download ${{ inputs.plugin_version }} -R "${{ inputs.plugin_repo }}" -p '*.deb' -p '*.rpm' -D 'Resources'
+          ls -a
+          ls -a Resources
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
