@@ -4,13 +4,17 @@ on:
   schedule: 
     # Daily at 8:20 UTC
     - cron: '20 8 * * *'
-  # Allows you to run this workflow manually from the Actions tab
+  # Enables manually running this workflow from the Actions tab
   workflow_dispatch:
 
 jobs:
   check:
     name: Check GitHub Release
     runs-on: macOS-13
+    env:
+      BINARY_REPO: evilmartians/lefthook
+      PLUGIN_REPO: gigabitcoin/template-plugin
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: Get lastest binary and plugin versions
       run: |
@@ -21,12 +25,11 @@ jobs:
 
           echo "PLUGIN_VERSION=$(echo $PLUGIN_RELEASE | grep -oE $SEMANTIC_VERSIONING_REGEX | head -n1)" >> $GITHUB_ENV
           echo "BINARY_VERSION=$(echo $BINARY_RELEASE | grep -oE $SEMANTIC_VERSIONING_REGEX | head -n1)" >> $GITHUB_ENV
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Print Variables
-      run: |
-          echo $PLUGIN_VERSION
-          echo $BINARY_VERSION
+    - uses: ./.github/workflows/publish-artifact-bundle.yml
+      with:
+        plugin_version: ${{ env.PLUGIN_VERSION }}
+        plugin_repo: ${{ env.PLUGIN_REPO }}
+      if: ${{ env.PLUGIN_VERSION == env.BINARY_VERSION }}
     - name: Print Conditionally
       run: |
           echo $PLUGIN_VERSION
