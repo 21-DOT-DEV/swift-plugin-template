@@ -35,7 +35,7 @@ jobs:
                             -p '*Windows*64.exe' \
                             -p '*.deb' \
                             -p '*.rpm' \
-                            -D 'Resources'
-          ls -a Resources
+                            -D 'Resources/template.artifactbundle'
+          ls -a Resources/template.artifactbundle
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
