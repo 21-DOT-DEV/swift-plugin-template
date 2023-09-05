@@ -26,8 +26,11 @@ jobs:
     runs-on: macOS-13
     steps:
     - uses: actions/checkout@v4
+      with:
+        path: Plugin-Repo
     - name: Get latest version
       run: |
+          ls -a
           gh release download ${{ inputs.plugin_version }} \
                             -R "${{ inputs.plugin_repo }}" \
                             -p '*MacOS*64' \
@@ -35,7 +38,7 @@ jobs:
                             -p '*Windows*64.exe' \
                             -p '*.deb' \
                             -p '*.rpm' \
-                            -D 'Resources/template.artifactbundle'
-          ls -a Resources/template.artifactbundle
+                            -D 'Plugin-Repo/Resources/template.artifactbundle'
+          ls -a Plugin-Repo/Resources/template.artifactbundle
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
