@@ -28,9 +28,14 @@ jobs:
     - uses: actions/checkout@v4
     - name: Get latest version
       run: |
-          ls -a
-          gh release download ${{ inputs.plugin_version }} -R "${{ inputs.plugin_repo }}" -p '*.deb' -p '*.rpm' -D 'Resources'
-          ls -a
+          gh release download ${{ inputs.plugin_version }} \
+                            -R "${{ inputs.plugin_repo }}" \
+                            -p '*MacOS*64' \
+                            -p '*Linux*64' \
+                            -p '*Windows*64.exe' \
+                            -p '*.deb' \
+                            -p '*.rpm' \
+                            -D 'Resources'
           ls -a Resources
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
