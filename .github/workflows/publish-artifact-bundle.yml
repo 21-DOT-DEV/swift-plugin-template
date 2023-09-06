@@ -28,9 +28,8 @@ jobs:
     - uses: actions/checkout@v4
       with:
         path: Plugin-Repo
-    - name: Get latest version
+    - name: Get latest binaries
       run: |
-          ls -a
           gh release download ${{ inputs.plugin_version }} \
                             -R "${{ inputs.plugin_repo }}" \
                             -p '*MacOS*64' \
@@ -39,6 +38,11 @@ jobs:
                             -p '*.deb' \
                             -p '*.rpm' \
                             -D 'Plugin-Repo/Resources/template.artifactbundle'
-          ls -a Plugin-Repo/Resources/template.artifactbundle
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Set info.json version
+      run: |
+         sed "s/<VERSION>/$plugin_version/g" \
+             Plugin-Repo/Resources/template.artifactbundle/info.json > Plugin-Repo/Resources/template.artifactbundle/info.json
+             
+         cat Plugin-Repo/Resources/template.artifactbundle/info.json
