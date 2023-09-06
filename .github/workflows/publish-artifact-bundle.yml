@@ -13,10 +13,10 @@ on:
   # Enables manually running this workflow from the Actions tab
   workflow_dispatch:
     inputs:
-      plugin_version:
+      binary_version:
         required: true
         type: string
-      plugin_repo:
+      binary_repo:
         required: true
         type: string
 
@@ -24,14 +24,16 @@ jobs:
   publish:
     name: Publish Artifact Bundle
     runs-on: macOS-13
+    env:
+      PLUGIN_VERSION: ${{ inputs.binary_version }}
     steps:
     - uses: actions/checkout@v4
       with:
         path: Plugin-Repo
     - name: Get latest binaries
       run: |
-          gh release download ${{ inputs.plugin_version }} \
-                            -R "${{ inputs.plugin_repo }}" \
+          gh release download ${{ inputs.binary_version }} \
+                            -R "${{ inputs.binary_repo }}" \
                             -p '*MacOS*64' \
                             -p '*Linux*64' \
                             -p '*Windows*64.exe' \
@@ -42,6 +44,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Set info.json version
       run: |
-          echo "${{ inputs.plugin_version }}"
-          sed -i '' "s/<VERSION>/${{ inputs.plugin_version }}/g" Plugin-Repo/Resources/template.artifactbundle/info.json
+          echo "${{ inputs.binary_version }}"
+          echo "PLUGIN_VERSION=${PLUGIN_VERSION#?}" >> $GITHUB_ENV
+          echo "$PLUGIN_VERSION"
+          sed -i '' "s/<VERSION>/${{ inputs.binary_version }}/g" Plugin-Repo/Resources/template.artifactbundle/info.json
           cat Plugin-Repo/Resources/template.artifactbundle/info.json
