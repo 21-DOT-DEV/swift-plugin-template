@@ -26,6 +26,7 @@ jobs:
     runs-on: macOS-13
     env:
       PLUGIN_VERSION: ${{ inputs.binary_version }}
+      PLUGIN_PATH: Plugin-Repo
     steps:
     - uses: actions/checkout@v4
       with:
@@ -39,7 +40,7 @@ jobs:
                             -p '*Windows*64.exe' \
                             -p '*.deb' \
                             -p '*.rpm' \
-                            -D 'Plugin-Repo/Resources/template.artifactbundle'
+                            -D '${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Set info.json version
@@ -52,5 +53,5 @@ jobs:
     - name: Zip Artifact Bundle
       run: |
           ls -a
-          zip -9 -r template.artifactbundl.zip template-plugin/Resources/template.artifactbundle/
+          zip -9 -r template.artifactbundl.zip ${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/
           ls -a
