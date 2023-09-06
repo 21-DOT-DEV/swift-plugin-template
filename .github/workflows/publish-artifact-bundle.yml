@@ -49,3 +49,8 @@ jobs:
           echo "$PLUGIN_VERSION"
           sed -i '' "s/<VERSION>/$PLUGIN_VERSION/g" Plugin-Repo/Resources/template.artifactbundle/info.json
           cat Plugin-Repo/Resources/template.artifactbundle/info.json
+    - name: Zip Artifact Bundle
+      run: |
+          ls -a
+          zip -9 -r template.artifactbundl.zip template-plugin/Resources/template.artifactbundle/
+          ls -a
