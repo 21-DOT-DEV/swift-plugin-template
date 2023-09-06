@@ -45,7 +45,7 @@ jobs:
     - name: Set info.json version
       run: |
           echo "${{ inputs.binary_version }}"
-          echo "PLUGIN_VERSION=${PLUGIN_VERSION#?}" >> $GITHUB_ENV
+          echo "PLUGIN_VERSION=${PLUGIN_VERSION:1}" >> $GITHUB_ENV
           echo "$PLUGIN_VERSION"
-          sed -i '' "s/<VERSION>/${{ inputs.binary_version }}/g" Plugin-Repo/Resources/template.artifactbundle/info.json
+          sed -i '' "s/<VERSION>/$PLUGIN_VERSION/g" Plugin-Repo/Resources/template.artifactbundle/info.json
           cat Plugin-Repo/Resources/template.artifactbundle/info.json
