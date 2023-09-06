@@ -3,10 +3,10 @@ name: Publish Artifact Bundle
 on:
   workflow_call:
     inputs:
-      plugin_version:
+      binary_version:
         required: true
         type: string
-      plugin_repo:
+      binary_repo:
         required: true
         type: string
 
@@ -46,6 +46,6 @@ jobs:
       run: |
           echo "${{ inputs.binary_version }}"
           echo "PLUGIN_VERSION=${PLUGIN_VERSION:1}" >> $GITHUB_ENV
-          echo "$PLUGIN_VERSION"
-          sed -i '' "s/<VERSION>/$PLUGIN_VERSION/g" Plugin-Repo/Resources/template.artifactbundle/info.json
+          echo "${{ env.PLUGIN_VERSION }}"
+          sed -i '' "s/<VERSION>/${{ env.PLUGIN_VERSION }}/g" Plugin-Repo/Resources/template.artifactbundle/info.json
           cat Plugin-Repo/Resources/template.artifactbundle/info.json
