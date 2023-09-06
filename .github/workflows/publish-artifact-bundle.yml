@@ -42,6 +42,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Set info.json version
       run: |
-          cat Plugin-Repo/Resources/template.artifactbundle/info.json
+          echo "$plugin_version"
           sed -i '' "s/<VERSION>/$plugin_version/g" Plugin-Repo/Resources/template.artifactbundle/info.json
           cat Plugin-Repo/Resources/template.artifactbundle/info.json
