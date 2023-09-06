@@ -43,7 +43,5 @@ jobs:
     - name: Set info.json version
       run: |
           cat Plugin-Repo/Resources/template.artifactbundle/info.json
-          sed "s/<VERSION>/$plugin_version/g" \
-             Plugin-Repo/Resources/template.artifactbundle/info.json > Plugin-Repo/Resources/template.artifactbundle/info.json.tmp
-          mv Plugin-Repo/Resources/template.artifactbundle/info.json.tmp Plugin-Repo/Resources/template.artifactbundle/info.json
+          sed -i '' "s/<VERSION>/$plugin_version/g" Plugin-Repo/Resources/template.artifactbundle/info.json
           cat Plugin-Repo/Resources/template.artifactbundle/info.json
