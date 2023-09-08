@@ -46,7 +46,7 @@ jobs:
     - name: Update Plugin Version
       run: |
           # The example binary includes a leading 'v' in the release version number. We drop it on the next line.
-          echo "PLUGIN_VERSION=$(echo $PLUGIN_VERSION | cut -c 2)" >> $GITHUB_ENV
+          echo "PLUGIN_VERSION=$(echo $PLUGIN_VERSION | cut -c2-)" >> $GITHUB_ENV
     - name: Set info.json version
       run: |
           sed -i '' "s/<VERSION>/${{ env.PLUGIN_VERSION }}/g" Plugin-Repo/Resources/template.artifactbundle/info.json
