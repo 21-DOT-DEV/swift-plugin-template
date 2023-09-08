@@ -43,18 +43,20 @@ jobs:
                             -D '${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Set info.json version
+    - name: Update Plugin Version
       run: |
           # The example binary includes a leading 'v' in the release version number. We drop it on the next line.
-          PLUGIN_VERSION="${PLUGIN_VERSION#?}"
-          sed -i '' "s/<VERSION>/$PLUGIN_VERSION/g" Plugin-Repo/Resources/template.artifactbundle/info.json
+          echo "PLUGIN_VERSION=$(echo $PLUGIN_VERSION | cut -c 2)" >> $GITHUB_ENV
+    - name: Set info.json version
+      run: |
+          sed -i '' "s/<VERSION>/${{ env.PLUGIN_VERSION }}/g" Plugin-Repo/Resources/template.artifactbundle/info.json
     - name: Add executable permissions
       run: |
           # The example binary includes a leading 'v' in the release version number. We drop it on the next line.
           PLUGIN_VERSION="${PLUGIN_VERSION#?}"
           # The example binaries for MacOS need the executable permission added.
-          chmod +x "${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/lefthook_$PLUGIN_VERSION_MacOS_arm64"
-          chmod +x "${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/lefthook_$PLUGIN_VERSION_MacOS_x86_64"
+          chmod +x "${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/lefthook_${{ env.PLUGIN_VERSION }}_MacOS_arm64"
+          chmod +x "${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/lefthook_${{ env.PLUGIN_VERSION }}_MacOS_x86_64"
     - name: Zip Artifact Bundle
       run: |
           zip -9 -r template.artifactbundle.zip ${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/
