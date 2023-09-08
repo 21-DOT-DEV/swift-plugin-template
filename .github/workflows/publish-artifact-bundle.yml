@@ -9,6 +9,9 @@ on:
       binary_repo:
         required: true
         type: string
+      binary_name:
+        required: true
+        type: string
 
   # Enables manually running this workflow from the Actions tab
   workflow_dispatch:
@@ -19,6 +22,9 @@ on:
       binary_repo:
         required: true
         type: string
+      binary_name:
+        required: true
+        type: string
 
 jobs:
   publish:
@@ -26,11 +32,10 @@ jobs:
     runs-on: macOS-13
     env:
       PLUGIN_VERSION: ${{ inputs.binary_version }}
-      PLUGIN_PATH: Plugin-Repo
     steps:
     - uses: actions/checkout@v4
       with:
-        path: Plugin-Repo
+        path: ${{ inputs.binary_name }}
     - name: Get latest binaries
       run: |
           gh release download ${{ inputs.binary_version }} \
@@ -40,7 +45,7 @@ jobs:
                             -p '*Windows*64.exe' \
                             -p '*.deb' \
                             -p '*.rpm' \
-                            -D '${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle'
+                            -D '${{ inputs.binary_name }}/Resources/template.artifactbundle'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Update Plugin Version
@@ -49,12 +54,14 @@ jobs:
           echo "PLUGIN_VERSION=$(echo $PLUGIN_VERSION | cut -c2-)" >> $GITHUB_ENV
     - name: Set info.json version
       run: |
-          sed -i '' "s/<VERSION>/${{ env.PLUGIN_VERSION }}/g" Plugin-Repo/Resources/template.artifactbundle/info.json
+          sed -i '' "s/<VERSION>/${{ env.PLUGIN_VERSION }}/g" ${{ inputs.binary_name }}/Resources/template.artifactbundle/info.json
+          sed -i '' "s/<TEMPLATE>/${{ inputs.binary_name }}/g" ${{ inputs.binary_name }}/Resources/template.artifactbundle/info.json
+          cat ${{ inputs.binary_name }}/Resources/template.artifactbundle/info.json
     - name: Add executable permissions
       run: |
           # The example binaries for MacOS need the executable permission added.
-          chmod +x "${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/lefthook_${{ env.PLUGIN_VERSION }}_MacOS_arm64"
-          chmod +x "${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/lefthook_${{ env.PLUGIN_VERSION }}_MacOS_x86_64"
+          chmod +x "${{ inputs.binary_name }}/Resources/template.artifactbundle/lefthook_${{ env.PLUGIN_VERSION }}_MacOS_arm64"
+          chmod +x "${{ inputs.binary_name }}/Resources/template.artifactbundle/lefthook_${{ env.PLUGIN_VERSION }}_MacOS_x86_64"
     - name: Zip Artifact Bundle
       run: |
-          zip -9 -r template.artifactbundle.zip ${{ env.PLUGIN_PATH }}/Resources/template.artifactbundle/
+          zip -9 -r template.artifactbundle.zip ${{ inputs.binary_name }}/Resources/template.artifactbundle/
