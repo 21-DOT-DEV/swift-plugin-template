@@ -30,8 +30,3 @@ jobs:
         plugin_version: ${{ env.PLUGIN_VERSION }}
         plugin_repo: ${{ env.PLUGIN_REPO }}
       if: ${{ env.PLUGIN_VERSION == env.BINARY_VERSION }}
-    - name: Print Conditionally
-      run: |
-          echo $PLUGIN_VERSION
-          echo $BINARY_VERSION
-      if: ${{ env.PLUGIN_VERSION == env.BINARY_VERSION }}
