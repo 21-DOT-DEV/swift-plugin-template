@@ -76,7 +76,7 @@ jobs:
           sed -i '' 's/\(url: ".*\/\)\([0-9]\+\.[0-9]\+\.[0-9]\+\)\(\/.*"\)/\1${{ env.PLUGIN_VERSION }}\3/g' ${{ inputs.binary_name }}/Package.swift
     - name: Push Changes to GitHub
       run: |
-          git show
+          (cd ${{ inputs.binary_name }} && git show)
     - name: Create GitHub Release
       run: |
           echo ${{ hashFiles( env.ARTIFACT_NAME ) }}
