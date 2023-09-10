@@ -27,8 +27,8 @@ let package = Package(
 //        .binaryTarget(name: "template", path: "template.artifactbundle.zip"),
         .binaryTarget(
             name: "template",
-            url: "https://github.com/GigaBitcoin/template-plugin/releases/download/0.0.1/template.artifactbundle.zip",
-            checksum: "42e1e7a4f7d7586ec6d13b3e03cce5612ac237244cc3cb1e6de7c49416d04520"
+            url: "https://github.com/GigaBitcoin/template-plugin/releases/download/1.4.10/template.artifactbundle.zip",
+            checksum: "bd2110272bffbfcbacd27d9b952d48f25aec3174c80dd5205b6b91fb3b5a8d6d"
         ),
     ],
     swiftLanguageVersions: [.v5]
