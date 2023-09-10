@@ -73,7 +73,7 @@ jobs:
       run: |
           echo ${{ hashFiles( env.ARTIFACT_NAME ) }}
           sed -i '' 's/checksum: ".*"/checksum: "${{ hashFiles( env.ARTIFACT_NAME ) }}"/g' ${{ inputs.binary_name }}/Package.swift
-          sed -i '' 's/\(url: ".*\/\)[0-9]\+\.[0-9]\+\.[0-9]\+\(\/.*"\)/\1${{ env.PLUGIN_VERSION }}\2/g' ${{ inputs.binary_name }}/Package.swift
+          sed -i '' -E "s/\/[0-9]+\.[0-9]+\.[0-9]+\//\/1.4.10\//" ${{ inputs.binary_name }}/Package.swift
           cat ${{ inputs.binary_name }}/Package.swift
     - name: Push Changes to GitHub
       run: |
