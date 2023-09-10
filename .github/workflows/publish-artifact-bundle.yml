@@ -72,8 +72,8 @@ jobs:
     - name: Update Package.swift
       run: |
           echo ${{ hashFiles( env.ARTIFACT_NAME ) }}
-          sed -i '' 's/checksum: ".*"/checksum: "${{ hashFiles( env.ARTIFACT_NAME ) }}"/g' Package.swift
-          sed -i '' 's/\(url: ".*\/\)\([0-9]\+\.[0-9]\+\.[0-9]\+\)\(\/.*"\)/\1${{ env.PLUGIN_VERSION }}\3/g' Package.swift
+          sed -i '' 's/checksum: ".*"/checksum: "${{ hashFiles( env.ARTIFACT_NAME ) }}"/g' ${{ inputs.binary_name }}/Package.swift
+          sed -i '' 's/\(url: ".*\/\)\([0-9]\+\.[0-9]\+\.[0-9]\+\)\(\/.*"\)/\1${{ env.PLUGIN_VERSION }}\3/g' ${{ inputs.binary_name }}/Package.swift
     - name: Push Changes to GitHub
       run: |
           git show
