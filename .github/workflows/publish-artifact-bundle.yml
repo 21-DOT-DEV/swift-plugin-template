@@ -81,3 +81,9 @@ jobs:
     - name: Create GitHub Release
       run: |
           echo $(cd ${{ inputs.binary_name }} && git rev-parse HEAD)
+          gh release create ${{ env.PLUGIN_VERSION }} \
+                     -R "gigabitcoin/template-plugin" \
+                     --target $(cd ${{ inputs.binary_name }} && git rev-parse HEAD) \
+                     ${{ env.ARTIFACT_NAME }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
